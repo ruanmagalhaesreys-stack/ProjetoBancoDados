@@ -1,0 +1,91 @@
+// DER do sistema - notação de Chen (aulas 02 a 05)
+// Gerar a imagem:  dot -Kneato -Tpng docs/der.dot -o docs/DER.png
+//
+// Legenda: retângulo = entidade; losango = relacionamento; elipse = atributo;
+// atributo sublinhado = chave; borda dupla = entidade fraca / relacionamento
+// identificador; linha dupla = participação total.
+graph DER {
+    layout=neato; overlap=false; splines=true; sep="+12";
+    node [fontname="Arial", fontsize=11];
+    edge [fontname="Arial", fontsize=11];
+
+    // ---------- entidades ----------
+    node [shape=box, style=filled, fillcolor="#dbe9f6"];
+    Usuario [label="Usuário"];
+    Centro; Tema; Questao [label="Questão"];
+    Pesquisa; Submissao [label="Submissão"];
+    Alternativa [peripheries=2];
+
+    // ---------- relacionamentos ----------
+    node [shape=diamond, style=filled, fillcolor="#fde9c9"];
+    pertence_c [label="pertence"];
+    cria; participa; destinada [label="destinada\na"];
+    contem [label="contém"];
+    pertence_t [label="pertence"];
+    possui [peripheries=2];
+    responde [label="Resposta"];
+    refere [label="refere-se"];
+    origem [label="vem de"];
+
+    // ---------- atributos ----------
+    node [shape=ellipse, style=filled, fillcolor=white];
+    u_id [label=<<u>id</u>>]; u_nome [label="nome"]; u_email [label="email"]; u_senha [label="senha"];
+    u_tipo [label="tipo\n(ADMIN/ALUNO)"]; u_mat [label="matrícula"];
+    c_sigla [label=<<u>sigla</u>>]; c_nome [label="nome"];
+    t_id [label=<<u>id</u>>]; t_nome [label="nome"];
+    q_id [label=<<u>id</u>>]; q_enun [label="enunciado"]; q_tipo [label="tipo"];
+    a_ordem [label=<<u>ordem</u> (chave parcial)>]; a_texto [label="texto"];
+    p_id [label=<<u>id</u>>]; p_tit [label="título"]; p_desc [label="descrição"];
+    p_ini [label="data início"]; p_fim [label="data fim"];
+    pq_ordem [label="ordem"];
+    part_data [label="data"];
+    s_id [label=<<u>id</u>>]; s_data [label="data"];
+    r_nota [label="nota (1 a 5)"]; r_alt [label="alternativa"]; r_texto [label="texto"];
+
+    // ---------- ligações dos atributos ----------
+    Usuario -- {u_id u_nome u_email u_senha u_tipo u_mat};
+    Centro -- {c_sigla c_nome};
+    Tema -- {t_id t_nome};
+    Questao -- {q_id q_enun q_tipo};
+    Alternativa -- {a_ordem a_texto};
+    Pesquisa -- {p_id p_tit p_desc p_ini p_fim};
+    contem -- pq_ordem;
+    participa -- part_data;
+    Submissao -- {s_id s_data};
+    responde -- {r_nota r_alt r_texto};
+
+    // ---------- relacionamentos e cardinalidades ----------
+    // só os alunos pertencem a um centro (participação parcial)
+    Usuario -- pertence_c [label="N"];
+    pertence_c -- Centro [label="1"];
+
+    // um administrador cria várias pesquisas
+    Usuario -- cria [label="1"];
+    cria -- Pesquisa [label="N", color="black:invis:black"];
+
+    // um aluno participa de várias pesquisas (quem respondeu)
+    Usuario -- participa [label="N"];
+    participa -- Pesquisa [label="M"];
+
+    Pesquisa -- destinada [label="N"];
+    destinada -- Centro [label="M"];
+
+    Pesquisa -- contem [label="N"];
+    contem -- Questao [label="M"];
+
+    Questao -- pertence_t [label="N", color="black:invis:black"];
+    pertence_t -- Tema [label="1"];
+
+    Questao -- possui [label="1"];
+    possui -- Alternativa [label="N", color="black:invis:black"];
+
+    // o que foi respondido: a submissão não se liga ao usuário (anonimato)
+    Submissao -- responde [label="N", color="black:invis:black"];
+    responde -- Questao [label="M"];
+
+    Submissao -- refere [label="N", color="black:invis:black"];
+    refere -- Pesquisa [label="1"];
+
+    Submissao -- origem [label="N", color="black:invis:black"];
+    origem -- Centro [label="1"];
+}
