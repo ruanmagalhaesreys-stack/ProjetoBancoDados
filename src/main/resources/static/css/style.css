@@ -1,0 +1,34 @@
+/* Estilo do sistema: simples, só o básico. */
+
+body { font-family: Arial, sans-serif; margin: 0; color: #222; }
+
+/* topo com o nome do sistema e o menu */
+header { border-bottom: 2px solid #333; padding: 10px 20px; }
+header b { font-size: 18px; margin-right: 20px; }
+header a { margin-right: 14px; color: #1a56b0; }
+
+main { max-width: 900px; margin: 20px auto; padding: 0 16px; }
+
+/* mensagens de sucesso e de erro */
+.msg  { background: #e3f2e3; border: 1px solid #7cb77c; padding: 8px; margin-bottom: 12px; }
+.erro { background: #fbe3e3; border: 1px solid #d77; padding: 8px; margin-bottom: 12px; }
+
+/* formulários */
+label { display: block; margin-top: 10px; }
+input[type=text], input[type=email], input[type=password], input[type=date], select, textarea {
+    width: 100%; padding: 6px; box-sizing: border-box;
+}
+button, .botao {
+    margin-top: 12px; padding: 6px 14px; background: #fff; border: 1px solid #555;
+    color: #222; text-decoration: none; cursor: pointer; display: inline-block;
+}
+
+/* tabelas */
+table { border-collapse: collapse; width: 100%; margin-top: 10px; }
+th, td { border: 1px solid #bbb; padding: 6px; text-align: left; }
+th { background: #eee; }
+
+/* gráfico de barras feito com HTML: a largura da barra é proporcional ao valor */
+.barra-fundo { background: #eee; width: 100%; }
+.barra { background: #43a047; color: #fff; padding: 2px 4px; white-space: nowrap; }
+.barra.ruim { background: #e53935; }
