@@ -33,15 +33,26 @@ public class AdminController {
     public String cadastrarAdmin(@RequestParam String nome, @RequestParam String email,
                                  @RequestParam String senha, Model model,
                                  RedirectAttributes redirect) throws SQLException {
+        nome = nome.trim();
         email = email.trim().toLowerCase();
-        if (usuarioDAO.existeEmail(email)) {
-            model.addAttribute("erro", "Já existe um usuário com este email.");
-            model.addAttribute("nome", nome);
-            model.addAttribute("email", email);
+
+        String erro = null;
+        if (nome.isEmpty() || nome.length() > 100) {
+            erro = "Informe o nome (até 100 letras).";
+        } else if (!email.contains("@") || email.length() > 100) {
+            erro = "Informe um email válido.";
+        } else if (senha.length() < 6 || senha.length() > 50) {
+            erro = "A senha deve ter de 6 a 50 caracteres.";
+        } else if (usuarioDAO.existeEmail(email)) {
+            erro = "Já existe um usuário com este email.";
+        }
+
+        if (erro != null) {
+            model.addAttribute("erro", erro);
             return "admin/novo-admin";
         }
-        usuarioDAO.inserirAdmin(nome.trim(), email, senha);
-        redirect.addFlashAttribute("msg", "Administrador " + nome.trim() + " cadastrado.");
+        usuarioDAO.inserirAdmin(nome, email, senha);
+        redirect.addFlashAttribute("msg", "Administrador " + nome + " cadastrado.");
         return "redirect:/admin";
     }
 }

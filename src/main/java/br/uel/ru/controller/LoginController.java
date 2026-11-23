@@ -41,10 +41,13 @@ public class LoginController {
     @PostMapping("/login")
     public String entrar(@RequestParam String email, @RequestParam String senha,
                          HttpSession session, Model model) throws SQLException {
+        if (email.isBlank() || senha.isBlank()) {
+            model.addAttribute("erro", "Informe o email e a senha.");
+            return "login";
+        }
         Usuario usuario = usuarioDAO.autenticar(email.trim().toLowerCase(), senha);
         if (usuario == null) {
             model.addAttribute("erro", "Email ou senha incorretos.");
-            model.addAttribute("email", email);
             return "login";
         }
         session.setAttribute("usuario", usuario); // guarda quem está logado
@@ -68,26 +71,36 @@ public class LoginController {
                             @RequestParam String matricula, @RequestParam String centro,
                             @RequestParam String senha, Model model,
                             RedirectAttributes redirect) throws SQLException {
+        nome = nome.trim();
         email = email.trim().toLowerCase();
+        matricula = matricula.trim();
+
+        // confere os campos no servidor; o erro aparece na própria tela
         String erro = null;
-        if (usuarioDAO.existeEmail(email)) {
+        if (nome.isEmpty() || nome.length() > 100) {
+            erro = "Informe o seu nome (até 100 letras).";
+        } else if (!email.contains("@") || email.length() > 100) {
+            erro = "Informe um email válido.";
+        } else if (!matricula.matches("[0-9]{6,12}")) {
+            erro = "A matrícula deve ter de 6 a 12 números.";
+        } else if (centro.isBlank()) {
+            erro = "Escolha o seu centro.";
+        } else if (senha.length() < 6 || senha.length() > 50) {
+            erro = "A senha deve ter de 6 a 50 caracteres.";
+        } else if (usuarioDAO.existeEmail(email)) {
             erro = "Já existe um cadastro com este email.";
-        } else if (usuarioDAO.existeMatricula(matricula.trim())) {
+        } else if (usuarioDAO.existeMatricula(matricula)) {
             erro = "Já existe um cadastro com esta matrícula.";
         }
 
         if (erro != null) {
-            // volta para o formulário com o erro e o que já foi digitado
+            // volta para o formulário com o erro (a tela mostra de novo o que foi digitado)
             model.addAttribute("erro", erro);
-            model.addAttribute("nome", nome);
-            model.addAttribute("email", email);
-            model.addAttribute("matricula", matricula);
-            model.addAttribute("centroEscolhido", centro);
             model.addAttribute("centros", centroDAO.listar());
             return "cadastro";
         }
 
-        usuarioDAO.inserirAluno(nome.trim(), email, senha, matricula.trim(), centro);
+        usuarioDAO.inserirAluno(nome, email, senha, matricula, centro);
         redirect.addFlashAttribute("msg", "Cadastro feito! Agora é só entrar.");
         return "redirect:/login";
     }
