@@ -47,13 +47,17 @@ public class PesquisaController {
                          HttpSession session, Model model, RedirectAttributes redirect) throws SQLException {
         Usuario admin = (Usuario) session.getAttribute("usuario");
         try {
+            if (inicio.isBlank() || fim.isBlank()) {
+                throw new IllegalArgumentException("Informe as datas de abertura e de fechamento.");
+            }
             // as datas chegam do formulário como texto "2026-11-30"
             pesquisaService.cadastrar(titulo, descricao, LocalDate.parse(inicio), LocalDate.parse(fim),
                                       admin.getId(), questoes, centros);
         } catch (IllegalArgumentException | SQLException e) {
+            // volta para o formulário com o erro e com as escolhas já marcadas
             model.addAttribute("erro", "Não foi possível salvar: " + e.getMessage());
-            model.addAttribute("titulo", titulo);
-            model.addAttribute("descricao", descricao);
+            model.addAttribute("questoesEscolhidas", questoes);
+            model.addAttribute("centrosEscolhidos", centros);
             return nova(model);
         }
         redirect.addFlashAttribute("msg", "Pesquisa cadastrada.");

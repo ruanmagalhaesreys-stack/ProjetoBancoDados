@@ -41,8 +41,8 @@ public class QuestaoController {
         try {
             questaoService.cadastrar(enunciado, tipo, tema, alternativas);
         } catch (IllegalArgumentException | SQLException e) {
+            // volta para o formulário com o erro (a tela mostra de novo o que foi digitado)
             model.addAttribute("erro", "Não foi possível salvar: " + e.getMessage());
-            model.addAttribute("enunciado", enunciado);
             model.addAttribute("temas", temaDAO.listar());
             return "questoes/form";
         }

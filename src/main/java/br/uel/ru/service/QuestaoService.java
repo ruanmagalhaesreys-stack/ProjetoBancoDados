@@ -27,8 +27,13 @@ public class QuestaoService {
                 if (!a.isBlank()) preenchidas.add(a.trim());
             }
         }
-        if (enunciado.isBlank()) {
-            throw new IllegalArgumentException("Escreva o enunciado da questão.");
+        if (enunciado.isBlank() || enunciado.trim().length() > 300) {
+            throw new IllegalArgumentException("Escreva o enunciado da questão (até 300 letras).");
+        }
+        for (String a : preenchidas) {
+            if (a.length() > 150) {
+                throw new IllegalArgumentException("Cada alternativa pode ter até 150 letras.");
+            }
         }
         if (tipo.equals("MULTIPLA") && preenchidas.size() < 2) {
             throw new IllegalArgumentException("Uma questão de múltipla escolha precisa de pelo menos 2 alternativas.");

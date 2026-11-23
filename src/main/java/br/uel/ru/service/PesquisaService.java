@@ -19,8 +19,11 @@ public class PesquisaService {
      */
     public void cadastrar(String titulo, String descricao, LocalDate inicio, LocalDate fim,
                           int idAdmin, List<Integer> questoes, List<String> centros) throws SQLException {
-        if (titulo.isBlank()) {
-            throw new IllegalArgumentException("Informe o título da pesquisa.");
+        if (titulo.isBlank() || titulo.trim().length() > 120) {
+            throw new IllegalArgumentException("Informe o título da pesquisa (até 120 letras).");
+        }
+        if (descricao.length() > 500) {
+            throw new IllegalArgumentException("A descrição pode ter até 500 letras.");
         }
         if (fim.isBefore(inicio)) {
             throw new IllegalArgumentException("A data de fim não pode ser antes da data de início.");
