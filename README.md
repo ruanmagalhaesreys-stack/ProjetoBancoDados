@@ -153,3 +153,106 @@ try {
 - Esquema relacional, dependências funcionais e justificativa da 3FN: [docs/esquema.md](docs/esquema.md)
 
 ![DER](docs/DER.png)
+
+## Relatórios
+
+As consultas estão em [database/relatorios.sql](database/relatorios.sql), com um comentário dizendo de
+qual relatório é cada uma. O `RelatorioDAO` usa as mesmas consultas, com os filtros da tela no lugar dos
+`?`. Só as notas (questões de escala, 1 a 5) entram nas médias.
+
+| Recurso SQL (seção 5 do enunciado) | Relatório |
+|---|---|
+| Junção interna (JOIN) | 1, 2 e 3 |
+| Junção externa (LEFT JOIN) | 3 |
+| Agregação e agrupamento (COUNT, AVG, GROUP BY, HAVING) | 1 (com HAVING), 2 e 3 |
+| Subconsulta | 2 (média geral de todas as notas) |
+| Ordenação e ranking (ORDER BY, FETCH FIRST, RANK()) | 2 (e ORDER BY em todos) |
+| Filtros (WHERE com datas, IN, LIKE) | 1 (BETWEEN de datas e IN de centros) e 2 (LIKE) |
+
+### 1. Satisfação média por tema
+
+**Objetivo:** mostrar quais temas do RU são mais bem e mais mal avaliados, num período e nos centros
+escolhidos. Trocando os filtros, dá para comparar períodos e grupos de alunos.
+**Recursos:** JOIN, AVG, COUNT, GROUP BY, **HAVING**, WHERE com **datas (BETWEEN)** e **IN**.
+
+![Relatório 1](docs/img/relatorio-1-temas.png)
+
+```sql
+SELECT t.nome AS tema, ROUND(AVG(r.nota), 2) AS media, COUNT(*) AS respostas
+FROM resposta r
+JOIN submissao s ON s.id = r.id_submissao
+JOIN pesquisa p  ON p.id = s.id_pesquisa
+JOIN questao q   ON q.id = r.id_questao
+JOIN tema t      ON t.id = q.id_tema
+WHERE r.nota IS NOT NULL
+  AND p.data_inicio BETWEEN ? AND ?
+  AND s.sigla_centro IN (?, ?, ?)        -- um ? para cada centro marcado
+GROUP BY t.nome
+HAVING COUNT(*) >= 3
+ORDER BY media DESC;
+```
+
+### 2. As 10 questões mais mal avaliadas
+
+**Objetivo:** apontar as questões com pior média, comparando com a média geral de todas as notas.
+Tem busca por texto no enunciado (ex.: "fila").
+**Recursos:** JOIN, AVG, COUNT, GROUP BY, **LIKE**, **subconsulta**, **RANK()**, ORDER BY, **FETCH FIRST**.
+
+![Relatório 2](docs/img/relatorio-2-ranking.png)
+
+```sql
+SELECT RANK() OVER (ORDER BY AVG(r.nota)) AS posicao,
+       q.id, q.enunciado, t.nome AS tema, COUNT(*) AS respostas,
+       ROUND(AVG(r.nota), 2) AS media,
+       (SELECT ROUND(AVG(nota), 2) FROM resposta) AS media_geral
+FROM resposta r
+JOIN questao q ON q.id = r.id_questao
+JOIN tema t    ON t.id = q.id_tema
+WHERE r.nota IS NOT NULL
+  AND LOWER(q.enunciado) LIKE ?          -- ex.: '%fila%'
+GROUP BY q.id, q.enunciado, t.nome
+ORDER BY posicao, q.id
+FETCH FIRST 10 ROWS ONLY;
+```
+
+### 3. Participação por centro e quem ainda não respondeu
+
+**Objetivo:** numa pesquisa escolhida, mostrar quantos alunos de cada centro já responderam e **quem**
+ainda falta, sem nunca mostrar o que cada um respondeu.
+**Recursos:** **LEFT JOIN** (para contar também quem não respondeu), COUNT, GROUP BY, ORDER BY, `IS NULL`.
+
+![Relatório 3](docs/img/relatorio-3-participacao.png)
+
+```sql
+-- 3a. participação por centro
+SELECT pc.sigla_centro AS centro,
+       COUNT(u.id) AS alunos,
+       COUNT(pa.id_aluno) AS responderam,
+       ROUND(100.0 * COUNT(pa.id_aluno) / COUNT(u.id)) AS taxa
+FROM pesquisa_centro pc
+JOIN usuario u            ON u.sigla_centro = pc.sigla_centro
+LEFT JOIN participacao pa ON pa.id_aluno = u.id
+                         AND pa.id_pesquisa = pc.id_pesquisa
+WHERE pc.id_pesquisa = ?
+GROUP BY pc.sigla_centro
+ORDER BY taxa DESC, centro;
+
+-- 3b. alunos que ainda não responderam
+SELECT u.nome, u.matricula, u.sigla_centro
+FROM pesquisa_centro pc
+JOIN usuario u            ON u.sigla_centro = pc.sigla_centro
+LEFT JOIN participacao pa ON pa.id_aluno = u.id
+                         AND pa.id_pesquisa = pc.id_pesquisa
+WHERE pc.id_pesquisa = ?
+  AND pa.id_aluno IS NULL
+ORDER BY u.sigla_centro, u.nome;
+```
+
+## Roteiro do pitch (5 minutos)
+
+| Tempo | O que mostrar |
+|---|---|
+| 30 s | Natureza: pesquisa de satisfação do RU da UEL. Particularidade: respostas anônimas, comparando temas, períodos e centros. |
+| 1 min | DER: Alternativa como entidade fraca de Questão, os N:M (pesquisa × questão, pesquisa × centro) e o anonimato: `participacao` (quem) separada de `submissao`/`resposta` (o quê), sem nenhuma chave ligando as duas. |
+| 2 min 30 s | Demonstração: como `admin@uel.br`, cadastrar uma questão e montar uma pesquisa para o CCE; entrar como `ana.demo@uel.br` e responder; tentar responder de novo (bloqueado); abrir um relatório. |
+| 1 min | Relatório 3 em detalhe: a tabela, as barras e o LEFT JOIN que conta também quem não respondeu. |
