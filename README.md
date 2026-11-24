@@ -82,7 +82,7 @@ O `schema.sql` pode ser rodado de novo a qualquer momento: ele apaga as tabelas 
 
 Quando aparecer `Started RuApplication`, abra **http://localhost:8080** no navegador.
 
-### 4. Contas de teste (senha de todas: `123456`)
+### 4. Contas de teste (senha de todas: `ruuel2026`)
 
 | Perfil | Email | Para quê |
 |---|---|---|
@@ -124,6 +124,9 @@ src/main/webapp/WEB-INF/jsp/   telas (JSP)
 
 - A tela chama um **controller**, que usa um **service** e os **DAOs**, que falam com o banco.
   Não há SQL nos controllers nem nas telas.
+- **Erros:** os campos dos formulários são conferidos no servidor; se algo estiver errado, a mesma tela
+  volta com o aviso numa caixa vermelha e com o que já foi digitado. Página inexistente ou erro inesperado
+  abrem a tela de erro do sistema (`WEB-INF/jsp/error.jsp`).
 - Gravações em mais de uma tabela rodam numa **transação**, escrita no próprio service:
 
 ```java

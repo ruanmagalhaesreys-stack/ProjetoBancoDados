@@ -2,7 +2,7 @@
 -- Pesquisa de Satisfação do RU da UEL
 -- carga.sql: dados de teste. Rodar logo depois do schema.sql:
 --   psql -U postgres -d ru_uel -f database/carga.sql
--- Senha de todos os usuários: 123456
+-- Senha de todos os usuários: ruuel2026
 --
 -- O banco é criado do zero pelo schema.sql, então os ids gerados pelo
 -- SERIAL começam em 1 e seguem a ordem dos INSERTs abaixo.
@@ -40,28 +40,28 @@ INSERT INTO tema (nome) VALUES
 -- responderam nenhuma pesquisa.
 -- ---------------------------------------------------------------------
 INSERT INTO usuario (nome, email, senha, tipo, matricula, sigla_centro) VALUES
-    ('Marta Oliveira',     'admin@uel.br',               '123456', 'ADMIN', NULL, NULL),         -- 1
-    ('Carlos Pereira',     'carlos.ru@uel.br',           '123456', 'ADMIN', NULL, NULL),         -- 2
-    ('Ana Souza (demo)',   'ana.demo@uel.br',            '123456', 'ALUNO', '202600001', 'CCE'),  -- 3
-    ('Lucas Almeida',      'lucas.almeida@uel.br',       '123456', 'ALUNO', '202300101', 'CCE'),  -- 4
-    ('Mariana Costa',      'mariana.costa@uel.br',       '123456', 'ALUNO', '202400102', 'CCE'),  -- 5
-    ('Pedro Santos',       'pedro.santos@uel.br',        '123456', 'ALUNO', '202200103', 'CCE'),  -- 6
-    ('Felipe Araujo',      'felipe.araujo@uel.br',       '123456', 'ALUNO', '202300201', 'CTU'),  -- 7
-    ('Isabela Moreira',    'isabela.moreira@uel.br',     '123456', 'ALUNO', '202200202', 'CTU'),  -- 8
-    ('Matheus Barbosa',    'matheus.barbosa@uel.br',     '123456', 'ALUNO', '202400203', 'CTU'),  -- 9
-    ('Bruno Lima (demo)',  'bruno.demo@uel.br',          '123456', 'ALUNO', '202600002', 'CCS'),  -- 10
-    ('Fernanda Pinto',     'fernanda.pinto@uel.br',      '123456', 'ALUNO', '202300302', 'CCS'),  -- 11
-    ('Diego Fernandes',    'diego.fernandes@uel.br',     '123456', 'ALUNO', '202400303', 'CCS'),  -- 12
-    ('Sofia Batista',      'sofia.batista@uel.br',       '123456', 'ALUNO', '202400402', 'CCH'),  -- 13
-    ('Caio Vieira',        'caio.vieira@uel.br',         '123456', 'ALUNO', '202500403', 'CCH'),  -- 14
-    ('Bianca Moura',       'bianca.moura@uel.br',        '123456', 'ALUNO', '202300501', 'CESA'), -- 15
-    ('Rodrigo Nascimento', 'rodrigo.nascimento@uel.br',  '123456', 'ALUNO', '202200502', 'CESA'), -- 16
-    ('Alice Peixoto',      'alice.peixoto@uel.br',       '123456', 'ALUNO', '202400602', 'CCB'),  -- 17
-    ('Murilo Andrade',     'murilo.andrade@uel.br',      '123456', 'ALUNO', '202500603', 'CCB'),  -- 18
-    ('Valentina Borges',   'valentina.borges@uel.br',    '123456', 'ALUNO', '202400701', 'CCA'),  -- 19
-    ('Pietro Fonseca',     'pietro.fonseca@uel.br',      '123456', 'ALUNO', '202300702', 'CCA'),  -- 20
-    ('Livia Coelho',       'livia.coelho@uel.br',        '123456', 'ALUNO', '202500802', 'CECA'), -- 21
-    ('Davi Medeiros',      'davi.medeiros@uel.br',       '123456', 'ALUNO', '202300902', 'CEFE'); -- 22
+    ('Marta Oliveira',     'admin@uel.br',               'ruuel2026', 'ADMIN', NULL, NULL),         -- 1
+    ('Carlos Pereira',     'carlos.ru@uel.br',           'ruuel2026', 'ADMIN', NULL, NULL),         -- 2
+    ('Ana Souza (demo)',   'ana.demo@uel.br',            'ruuel2026', 'ALUNO', '202600001', 'CCE'),  -- 3
+    ('Lucas Almeida',      'lucas.almeida@uel.br',       'ruuel2026', 'ALUNO', '202300101', 'CCE'),  -- 4
+    ('Mariana Costa',      'mariana.costa@uel.br',       'ruuel2026', 'ALUNO', '202400102', 'CCE'),  -- 5
+    ('Pedro Santos',       'pedro.santos@uel.br',        'ruuel2026', 'ALUNO', '202200103', 'CCE'),  -- 6
+    ('Felipe Araujo',      'felipe.araujo@uel.br',       'ruuel2026', 'ALUNO', '202300201', 'CTU'),  -- 7
+    ('Isabela Moreira',    'isabela.moreira@uel.br',     'ruuel2026', 'ALUNO', '202200202', 'CTU'),  -- 8
+    ('Matheus Barbosa',    'matheus.barbosa@uel.br',     'ruuel2026', 'ALUNO', '202400203', 'CTU'),  -- 9
+    ('Bruno Lima (demo)',  'bruno.demo@uel.br',          'ruuel2026', 'ALUNO', '202600002', 'CCS'),  -- 10
+    ('Fernanda Pinto',     'fernanda.pinto@uel.br',      'ruuel2026', 'ALUNO', '202300302', 'CCS'),  -- 11
+    ('Diego Fernandes',    'diego.fernandes@uel.br',     'ruuel2026', 'ALUNO', '202400303', 'CCS'),  -- 12
+    ('Sofia Batista',      'sofia.batista@uel.br',       'ruuel2026', 'ALUNO', '202400402', 'CCH'),  -- 13
+    ('Caio Vieira',        'caio.vieira@uel.br',         'ruuel2026', 'ALUNO', '202500403', 'CCH'),  -- 14
+    ('Bianca Moura',       'bianca.moura@uel.br',        'ruuel2026', 'ALUNO', '202300501', 'CESA'), -- 15
+    ('Rodrigo Nascimento', 'rodrigo.nascimento@uel.br',  'ruuel2026', 'ALUNO', '202200502', 'CESA'), -- 16
+    ('Alice Peixoto',      'alice.peixoto@uel.br',       'ruuel2026', 'ALUNO', '202400602', 'CCB'),  -- 17
+    ('Murilo Andrade',     'murilo.andrade@uel.br',      'ruuel2026', 'ALUNO', '202500603', 'CCB'),  -- 18
+    ('Valentina Borges',   'valentina.borges@uel.br',    'ruuel2026', 'ALUNO', '202400701', 'CCA'),  -- 19
+    ('Pietro Fonseca',     'pietro.fonseca@uel.br',      'ruuel2026', 'ALUNO', '202300702', 'CCA'),  -- 20
+    ('Livia Coelho',       'livia.coelho@uel.br',        'ruuel2026', 'ALUNO', '202500802', 'CECA'), -- 21
+    ('Davi Medeiros',      'davi.medeiros@uel.br',       'ruuel2026', 'ALUNO', '202300902', 'CEFE'); -- 22
 
 -- ---------------------------------------------------------------------
 -- 4. Questões (ids 1 a 30): 25 de escala, 3 de múltipla escolha e 2 de
