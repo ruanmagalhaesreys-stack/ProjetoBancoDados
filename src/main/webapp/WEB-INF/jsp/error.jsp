@@ -1,8 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%-- Página de erro do sistema. O Spring Boot abre esta tela (view "error")
-     sempre que algo dá errado: página que não existe, endereço com dado inválido
-     ou uma exceção no servidor. ${status} é o código HTTP do erro. --%>
+<%-- Tela de erro do sistema. O Spring Boot abre esta tela sempre que algo dá errado:
+     página que não existe, endereço com dado inválido ou falha no servidor.
+     status é o código do erro, por exemplo 404 para página que não existe. --%>
 <c:set var="titulo" value="Erro" />
 <%@ include file="/WEB-INF/jsp/fragmentos/header.jsp" %>
 

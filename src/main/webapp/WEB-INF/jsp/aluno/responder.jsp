@@ -7,10 +7,11 @@
 <p>${pesquisa.descricao}</p>
 <p><i>Suas respostas são anônimas. Nas questões de escala, 1 = muito ruim e 5 = muito bom.</i></p>
 
-<%-- Se faltar alguma resposta, a página volta com o aviso e com o que já foi marcado (${param[campo]}) --%>
+<%-- Se faltar alguma resposta, a página volta com o aviso e com o que o aluno já tinha marcado.
+     param guarda o que veio do formulário. --%>
 <form method="post" action="/aluno/pesquisas/${pesquisa.id}" novalidate>
     <c:forEach var="q" items="${pesquisa.questoes}" varStatus="s">
-        <%-- o nome do campo é "q" + id da questão, ex.: q12 --%>
+        <%-- O nome de cada campo é a letra q mais o id da questão, por exemplo q12. --%>
         <c:set var="campo" value="q${q.id}" />
         <p><b>${s.count}. ${q.enunciado}</b></p>
 

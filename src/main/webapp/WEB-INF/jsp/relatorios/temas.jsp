@@ -18,7 +18,8 @@
     <button type="submit">Filtrar</button>
 </form>
 
-<%-- Gráfico de barras: nota 5 = 100% da largura, então largura = média x 20 --%>
+<%-- Gráfico de barras feito com HTML: a nota 5 ocupa 100% da largura,
+     então a largura da barra é a média vezes 20. --%>
 <table>
     <tr><th style="width:30%">Tema</th><th>Média</th><th style="width:12%">Respostas</th></tr>
     <c:forEach var="l" items="${linhas}">

@@ -15,7 +15,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Os 3 relatórios: cada um com filtros, tabela e gráfico de barras. */
+// Os 3 relatórios: cada um com filtros, tabela e gráfico de barras.
 @Controller
 public class RelatorioController {
 
@@ -23,7 +23,7 @@ public class RelatorioController {
     private CentroDAO centroDAO = new CentroDAO();
     private PesquisaDAO pesquisaDAO = new PesquisaDAO();
 
-    /** Relatório 1: satisfação média por tema. */
+    // Relatório 1: satisfação média por tema.
     @GetMapping("/admin/relatorios/temas")
     public String temas(@RequestParam(defaultValue = "2024-01-01") String inicio,
                         @RequestParam(defaultValue = "2026-12-31") String fim,
@@ -44,7 +44,7 @@ public class RelatorioController {
         return "relatorios/temas";
     }
 
-    /** Relatório 2: as 10 questões mais mal avaliadas. */
+    // Relatório 2: as 10 questões mais mal avaliadas.
     @GetMapping("/admin/relatorios/ranking")
     public String ranking(@RequestParam(defaultValue = "") String busca, Model model) throws SQLException {
         model.addAttribute("linhas", relatorioDAO.rankingQuestoes(busca.trim()));
@@ -52,7 +52,7 @@ public class RelatorioController {
         return "relatorios/ranking";
     }
 
-    /** Relatório 3: participação por centro e quem ainda não respondeu. */
+    // Relatório 3: participação por centro e quem ainda não respondeu.
     @GetMapping("/admin/relatorios/participacao")
     public String participacao(@RequestParam(required = false) Integer pesquisa, Model model) throws SQLException {
         List<Pesquisa> pesquisas = pesquisaDAO.listar();

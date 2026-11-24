@@ -18,7 +18,7 @@
     <button type="submit">Ver</button>
 </form>
 
-<%-- Gráfico de barras: a largura é a taxa de participação (0 a 100%) --%>
+<%-- Gráfico de barras feito com HTML: a largura da barra é a taxa de participação, de 0 a 100%. --%>
 <table>
     <tr><th>Centro</th><th>Alunos</th><th>Responderam</th><th>Taxa</th><th style="width:40%">Gráfico</th></tr>
     <c:forEach var="l" items="${linhas}">

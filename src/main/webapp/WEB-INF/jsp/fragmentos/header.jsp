@@ -1,6 +1,6 @@
 <%@ page pageEncoding="UTF-8" %>
-<%-- Topo de todas as páginas (incluído com <%@ include %>).
-     A página que inclui define ${titulo} e declara a taglib "c". --%>
+<%-- Topo de todas as páginas. As outras telas incluem este arquivo com include.
+     Cada tela define o seu titulo antes de incluir. --%>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>

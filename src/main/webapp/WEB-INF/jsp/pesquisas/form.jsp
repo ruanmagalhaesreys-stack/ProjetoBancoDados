@@ -5,7 +5,8 @@
 
 <h1>Nova pesquisa</h1>
 
-<%-- Se der erro, a página volta com o que foi digitado (${param...}) e marcado --%>
+<%-- Se der erro, a página volta com o que foi digitado e marcado.
+     param guarda o que veio do formulário. --%>
 <form method="post" action="/admin/pesquisas" novalidate>
     <label>Título <input type="text" name="titulo" value="${param.titulo}"></label>
     <label>Descrição <textarea name="descricao">${param.descricao}</textarea></label>

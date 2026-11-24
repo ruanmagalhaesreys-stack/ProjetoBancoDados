@@ -11,14 +11,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Consultas dos 3 relatórios (as mesmas de database/relatorios.sql).
- * Cada linha do resultado vira um Map: nome da coluna -> valor.
- * Na JSP, ${linha.media} lê o valor guardado com a chave "media".
- */
+// Consultas dos 3 relatórios (as mesmas de database/relatorios.sql).
+// Cada linha do resultado vira um Map, que guarda cada valor pelo nome da coluna.
+// Na JSP, ${linha.media} lê o valor guardado com a chave "media".
 public class RelatorioDAO {
 
-    /** Relatório 1: média de cada tema, no período e nos centros escolhidos. */
+    // Relatório 1: média de cada tema, no período e nos centros escolhidos.
     public List<Map<String, Object>> satisfacaoPorTema(LocalDate inicio, LocalDate fim,
                                                        List<String> centros) throws SQLException {
         // Um "?" para cada centro escolhido: IN (?, ?, ?)
@@ -61,7 +59,7 @@ public class RelatorioDAO {
         return linhas;
     }
 
-    /** Relatório 2: as 10 questões com pior média, com busca por texto. */
+    // Relatório 2: as 10 questões com pior média, com busca por texto.
     public List<Map<String, Object>> rankingQuestoes(String busca) throws SQLException {
         String sql = "SELECT RANK() OVER (ORDER BY AVG(r.nota)) AS posicao, "
                    + "       q.id, q.enunciado, t.nome AS tema, COUNT(*) AS respostas, "
@@ -97,7 +95,7 @@ public class RelatorioDAO {
         return linhas;
     }
 
-    /** Relatório 3a: alunos de cada centro-alvo e quantos responderam. */
+    // Relatório 3a: alunos de cada centro-alvo e quantos responderam.
     public List<Map<String, Object>> participacaoPorCentro(int idPesquisa) throws SQLException {
         String sql = "SELECT pc.sigla_centro AS centro, "
                    + "       COUNT(u.id) AS alunos, "
@@ -129,7 +127,7 @@ public class RelatorioDAO {
         return linhas;
     }
 
-    /** Relatório 3b: alunos dos centros-alvo que ainda não responderam. */
+    // Relatório 3b: alunos dos centros-alvo que ainda não responderam.
     public List<Map<String, Object>> alunosQueNaoResponderam(int idPesquisa) throws SQLException {
         String sql = "SELECT u.nome, u.matricula, u.sigla_centro "
                    + "FROM pesquisa_centro pc "

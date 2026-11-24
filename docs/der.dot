@@ -1,5 +1,5 @@
-// DER do sistema - notação de Chen (aulas 02 a 05)
-// Gerar a imagem:  dot -Kneato -Tpng docs/der.dot -o docs/DER.png
+// DER do sistema, na notação de Chen (aulas 02 a 05).
+// Para gerar a imagem: dot -Kneato -Tpng docs/der.dot -o docs/DER.png
 //
 // Legenda: retângulo = entidade; losango = relacionamento; elipse = atributo;
 // atributo sublinhado = chave; borda dupla = entidade fraca / relacionamento
@@ -9,14 +9,14 @@ graph DER {
     node [fontname="Arial", fontsize=11];
     edge [fontname="Arial", fontsize=11];
 
-    // ---------- entidades ----------
+    // Entidades.
     node [shape=box, style=filled, fillcolor="#dbe9f6"];
     Usuario [label="Usuário"];
     Centro; Tema; Questao [label="Questão"];
     Pesquisa; Submissao [label="Submissão"];
     Alternativa [peripheries=2];
 
-    // ---------- relacionamentos ----------
+    // Relacionamentos.
     node [shape=diamond, style=filled, fillcolor="#fde9c9"];
     pertence_c [label="pertence"];
     cria; participa; destinada [label="destinada\na"];
@@ -27,7 +27,7 @@ graph DER {
     refere [label="refere-se"];
     origem [label="vem de"];
 
-    // ---------- atributos ----------
+    // Atributos.
     node [shape=ellipse, style=filled, fillcolor=white];
     u_id [label=<<u>id</u>>]; u_nome [label="nome"]; u_email [label="email"]; u_senha [label="senha"];
     u_tipo [label="tipo\n(ADMIN/ALUNO)"]; u_mat [label="matrícula"];
@@ -42,7 +42,7 @@ graph DER {
     s_id [label=<<u>id</u>>]; s_data [label="data"];
     r_nota [label="nota (1 a 5)"]; r_alt [label="alternativa"]; r_texto [label="texto"];
 
-    // ---------- ligações dos atributos ----------
+    // Ligações dos atributos.
     Usuario -- {u_id u_nome u_email u_senha u_tipo u_mat};
     Centro -- {c_sigla c_nome};
     Tema -- {t_id t_nome};
@@ -54,7 +54,7 @@ graph DER {
     Submissao -- {s_id s_data};
     responde -- {r_nota r_alt r_texto};
 
-    // ---------- relacionamentos e cardinalidades ----------
+    // Relacionamentos e cardinalidades.
     // só os alunos pertencem a um centro (participação parcial)
     Usuario -- pertence_c [label="N"];
     pertence_c -- Centro [label="1"];

@@ -5,7 +5,8 @@
 
 <h1>Nova questão</h1>
 
-<%-- Se der erro, a página volta com o que foi digitado (${param...}) --%>
+<%-- Se der erro, a página volta com o que foi digitado.
+     param guarda o que veio do formulário. --%>
 <form method="post" action="/admin/questoes" novalidate>
     <label>Enunciado <textarea name="enunciado">${param.enunciado}</textarea></label>
 

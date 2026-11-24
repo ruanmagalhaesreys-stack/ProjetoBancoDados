@@ -6,7 +6,8 @@
 <h1>Pesquisa de Satisfação do RU</h1>
 <h2>Entrar</h2>
 
-<%-- novalidate: quem confere os campos é o servidor, e o erro aparece na caixa vermelha --%>
+<%-- novalidate desliga os avisos do navegador. Quem confere os campos é o servidor,
+     e o erro aparece na caixa vermelha do topo. --%>
 <form method="post" action="/login" novalidate>
     <label>Email <input type="email" name="email" value="${param.email}"></label>
     <label>Senha <input type="password" name="senha"></label>
