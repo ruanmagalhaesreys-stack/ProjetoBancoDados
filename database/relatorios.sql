@@ -1,30 +1,20 @@
--- =====================================================================
 -- Pesquisa de Satisfação do RU da UEL
--- relatorios.sql: consultas dos 3 relatórios.
+-- Consultas dos 3 relatórios do sistema.
 --
--- Os valores fixos (datas, centros, texto da busca, id da pesquisa) são
--- exemplos. No sistema eles vêm dos filtros da tela e entram no lugar
--- dos "?" do PreparedStatement (ver RelatorioDAO.java).
---
--- Só as respostas de escala (coluna nota, de 1 a 5) entram nas médias.
---
--- Recursos SQL pedidos no enunciado e onde aparecem:
---   JOIN ................................ relatórios 1, 2 e 3
---   LEFT JOIN ........................... relatório 3
---   COUNT, AVG, GROUP BY, HAVING ........ relatórios 1, 2 e 3 (HAVING no 1)
---   Subconsulta ......................... relatório 2 (média geral)
---   ORDER BY, FETCH FIRST, RANK() ....... relatório 2
---   WHERE com datas, IN, LIKE ........... relatórios 1 (BETWEEN e IN) e 2 (LIKE)
--- =====================================================================
+-- As datas, os centros, o texto da busca e o número da pesquisa usados aqui são exemplos.
+-- No sistema, esses valores vêm dos filtros da tela (veja RelatorioDAO.java).
+-- Só as questões de escala (coluna nota, de 1 a 5) entram nas médias.
 
-SET client_encoding = 'UTF8';  -- o arquivo está em UTF-8 (acentos)
+-- Avisa o banco que o arquivo está em UTF-8, para os acentos ficarem certos.
+SET client_encoding = 'UTF8';
 
 
--- ---------------------------------------------------------------------
--- RELATÓRIO 1 - Satisfação média por tema
--- Filtros da tela: período (data de abertura da pesquisa) e centros.
--- Recursos: JOIN, AVG, COUNT, GROUP BY, HAVING, BETWEEN com datas, IN.
--- ---------------------------------------------------------------------
+-- Relatório 1: satisfação média por tema.
+-- Mostra a média das notas de cada tema, nas pesquisas de um período e nos centros escolhidos.
+-- Os JOIN juntam a resposta com a submissão, a pesquisa, a questão e o tema.
+-- AVG calcula a média, COUNT conta as respostas e GROUP BY faz uma linha por tema.
+-- BETWEEN filtra o período e IN filtra os centros escolhidos.
+-- HAVING mostra só os temas com pelo menos 3 respostas.
 SELECT t.nome                AS tema,
        ROUND(AVG(r.nota), 2) AS media,
        COUNT(*)              AS respostas
@@ -41,12 +31,12 @@ HAVING COUNT(*) >= 3
 ORDER BY media DESC;
 
 
--- ---------------------------------------------------------------------
--- RELATÓRIO 2 - As 10 questões mais mal avaliadas
--- Filtro da tela: busca por um texto no enunciado (ex.: fila).
--- Recursos: JOIN, AVG, COUNT, GROUP BY, LIKE, subconsulta (média geral
--- de todas as notas), RANK() para a posição, ORDER BY e FETCH FIRST.
--- ---------------------------------------------------------------------
+-- Relatório 2: as 10 questões mais mal avaliadas.
+-- Mostra as questões com a menor média, com uma busca por texto no enunciado.
+-- LIKE '%fila%' procura enunciados que tenham a palavra "fila" em qualquer lugar.
+-- RANK() dá a posição de cada questão, da pior média para a melhor.
+-- A subconsulta (o SELECT entre parênteses) calcula a média geral, para comparar.
+-- FETCH FIRST 10 ROWS ONLY mostra só as 10 primeiras linhas.
 SELECT RANK() OVER (ORDER BY AVG(r.nota)) AS posicao,
        q.id,
        q.enunciado,
@@ -64,15 +54,13 @@ ORDER BY posicao, q.id
 FETCH FIRST 10 ROWS ONLY;
 
 
--- ---------------------------------------------------------------------
--- RELATÓRIO 3 - Participação por centro e quem ainda não respondeu
--- Filtro da tela: a pesquisa.
--- Recursos: LEFT JOIN (para contar também quem não respondeu), COUNT,
--- GROUP BY, ORDER BY e IS NULL.
--- ---------------------------------------------------------------------
+-- Relatório 3: participação por centro e quem ainda não respondeu.
+-- Usa duas consultas sobre a pesquisa escolhida na tela.
 
--- 3a. Para cada centro que deve responder: alunos, quantos responderam
---     e a taxa de participação.
+-- Primeira consulta: para cada centro da pesquisa, quantos alunos existem,
+-- quantos responderam e a taxa de participação em porcentagem.
+-- O LEFT JOIN traz também os alunos que não responderam (sem participação).
+-- COUNT(pa.id_aluno) conta só quem tem participação, ou seja, quem respondeu.
 SELECT pc.sigla_centro                                 AS centro,
        COUNT(u.id)                                     AS alunos,
        COUNT(pa.id_aluno)                              AS responderam,
@@ -85,7 +73,8 @@ WHERE pc.id_pesquisa = 5
 GROUP BY pc.sigla_centro
 ORDER BY taxa DESC, centro;
 
--- 3b. Alunos dos centros-alvo que ainda não responderam.
+-- Segunda consulta: a lista dos alunos que ainda não responderam.
+-- É o mesmo LEFT JOIN, mas fica só com quem não tem participação (IS NULL).
 SELECT u.nome, u.matricula, u.sigla_centro
 FROM pesquisa_centro pc
 JOIN usuario u            ON u.sigla_centro = pc.sigla_centro
