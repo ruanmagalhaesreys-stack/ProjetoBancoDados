@@ -1,6 +1,6 @@
 package br.uel.ru.model;
 
-/** Usuário do sistema: administrador ou aluno. */
+// Usuário do sistema: administrador ou aluno.
 public class Usuario {
 
     private int id;

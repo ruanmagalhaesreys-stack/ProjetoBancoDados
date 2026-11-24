@@ -1,6 +1,6 @@
 package br.uel.ru.model;
 
-/** Tema das questões (Comida, Fila, Limpeza, ...). */
+// Tema das questões (Comida, Fila, Limpeza, ...).
 public class Tema {
 
     private int id;

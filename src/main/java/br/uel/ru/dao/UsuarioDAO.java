@@ -7,10 +7,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/** Acesso à tabela usuario (administradores e alunos). */
+// Acesso à tabela usuario (administradores e alunos).
 public class UsuarioDAO {
 
-    /** Procura o usuário pelo email e senha. Devolve null se não achar. */
+    // Procura o usuário pelo email e senha. Devolve null se não achar.
     public Usuario autenticar(String email, String senha) throws SQLException {
         String sql = "SELECT id, nome, email, tipo, matricula, sigla_centro "
                    + "FROM usuario WHERE email = ? AND senha = ?";

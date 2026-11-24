@@ -10,10 +10,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Acesso às tabelas questao e alternativa. */
+// Acesso às tabelas questao e alternativa.
 public class QuestaoDAO {
 
-    /** Todas as questões, com o nome do tema e as alternativas. */
+    // Todas as questões, com o nome do tema e as alternativas.
     public List<Questao> listar() throws SQLException {
         String sql = "SELECT q.id, q.enunciado, q.tipo, q.id_tema, t.nome AS nome_tema "
                    + "FROM questao q JOIN tema t ON t.id = q.id_tema "
@@ -32,7 +32,7 @@ public class QuestaoDAO {
         return lista;
     }
 
-    /** Questões de uma pesquisa, na ordem da pesquisa. */
+    // Questões de uma pesquisa, na ordem da pesquisa.
     public List<Questao> listarPorPesquisa(int idPesquisa) throws SQLException {
         String sql = "SELECT q.id, q.enunciado, q.tipo, q.id_tema, t.nome AS nome_tema "
                    + "FROM pesquisa_questao pq "
@@ -71,10 +71,8 @@ public class QuestaoDAO {
         return lista;
     }
 
-    /**
-     * Insere a questão e devolve o id gerado (RETURNING id).
-     * Recebe a conexão do service, porque faz parte de uma transação.
-     */
+    // Insere a questão e devolve o id gerado (RETURNING id).
+    // Recebe a conexão do service, porque faz parte de uma transação.
     public int inserir(Connection con, String enunciado, String tipo, int idTema) throws SQLException {
         String sql = "INSERT INTO questao (enunciado, tipo, id_tema) VALUES (?, ?, ?) RETURNING id";
         try (PreparedStatement st = con.prepareStatement(sql)) {

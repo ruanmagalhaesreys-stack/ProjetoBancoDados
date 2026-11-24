@@ -1,6 +1,6 @@
 package br.uel.ru.model;
 
-/** Centro de estudos da UEL (CCE, CTU, ...). */
+// Centro de estudos da UEL (CCE, CTU, ...).
 public class Centro {
 
     private String sigla;

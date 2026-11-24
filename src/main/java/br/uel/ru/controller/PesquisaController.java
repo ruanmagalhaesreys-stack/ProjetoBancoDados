@@ -17,7 +17,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
-/** Telas do administrador para montar pesquisas (RF2, RF3 e RF4). */
+// Telas do administrador para montar pesquisas (RF2, RF3 e RF4).
 @Controller
 public class PesquisaController {
 

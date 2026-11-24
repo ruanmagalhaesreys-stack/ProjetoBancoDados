@@ -17,7 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.sql.SQLException;
 import java.util.Map;
 
-/** Área do aluno: ver as pesquisas abertas e responder (RF5). */
+// Área do aluno: ver as pesquisas abertas e responder (RF5).
 @Controller
 public class AlunoController {
 

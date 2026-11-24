@@ -10,10 +10,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.sql.SQLException;
 
-/**
- * Painel do administrador e cadastro de novos administradores.
- * Tudo em /admin só abre para quem já é administrador (LoginInterceptor).
- */
+// Painel do administrador e cadastro de novos administradores.
+// Tudo em /admin só abre para quem já é administrador (LoginInterceptor).
 @Controller
 public class AdminController {
 

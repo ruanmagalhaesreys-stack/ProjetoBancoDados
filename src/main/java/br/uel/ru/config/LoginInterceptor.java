@@ -6,12 +6,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-/**
- * Roda antes de cada página protegida:
- *  - sem login, manda para a tela de login;
- *  - /admin/** só para administradores;
- *  - /aluno/** só para alunos.
- */
+// Roda antes de abrir qualquer página de administrador ou de aluno.
+// Quem não fez login vai para a tela de login.
+// As páginas que começam com /admin só abrem para administradores,
+// e as que começam com /aluno só abrem para alunos.
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
 

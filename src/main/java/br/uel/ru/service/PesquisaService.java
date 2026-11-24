@@ -8,15 +8,13 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
-/** Cadastro de pesquisas (RF2, RF3 e RF4). */
+// Cadastro de pesquisas (RF2, RF3 e RF4).
 public class PesquisaService {
 
     private PesquisaDAO pesquisaDAO = new PesquisaDAO();
 
-    /**
-     * Grava a pesquisa, as questões escolhidas e os centros que devem
-     * responder. São três tabelas, então tudo roda numa transação.
-     */
+    // Grava a pesquisa, as questões escolhidas e os centros que devem
+    // responder. São três tabelas, então tudo roda numa transação.
     public void cadastrar(String titulo, String descricao, LocalDate inicio, LocalDate fim,
                           int idAdmin, List<Integer> questoes, List<String> centros) throws SQLException {
         if (titulo.isBlank() || titulo.trim().length() > 120) {

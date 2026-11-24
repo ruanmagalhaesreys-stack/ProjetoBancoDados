@@ -8,16 +8,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Cadastro de questões (RF1). */
+// Cadastro de questões (RF1).
 public class QuestaoService {
 
     private QuestaoDAO questaoDAO = new QuestaoDAO();
 
-    /**
-     * Grava a questão e, se for de múltipla escolha, as alternativas.
-     * São duas tabelas, então tudo roda numa transação:
-     * ou grava tudo (commit), ou nada (rollback).
-     */
+    // Grava a questão e, se for de múltipla escolha, as alternativas.
+    // São duas tabelas, então tudo roda numa transação:
+    // ou grava tudo (commit), ou nada (rollback).
     public void cadastrar(String enunciado, String tipo, int idTema, List<String> alternativas)
             throws SQLException {
         // só as alternativas preenchidas contam

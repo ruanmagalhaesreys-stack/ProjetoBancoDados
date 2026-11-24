@@ -1,6 +1,6 @@
 package br.uel.ru.model;
 
-/** Alternativa de uma questão de múltipla escolha (entidade fraca). */
+// Alternativa de uma questão de múltipla escolha (entidade fraca).
 public class Alternativa {
 
     private int idQuestao;

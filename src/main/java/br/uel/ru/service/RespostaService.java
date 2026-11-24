@@ -13,13 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/** O aluno responde uma pesquisa (RF5) de forma anônima (RF6). */
+// O aluno responde uma pesquisa (RF5) de forma anônima (RF6).
 public class RespostaService {
 
     private RespostaDAO respostaDAO = new RespostaDAO();
     private QuestaoDAO questaoDAO = new QuestaoDAO();
 
-    /** Confere se o aluno pode responder a pesquisa agora. */
+    // Confere se o aluno pode responder a pesquisa agora.
     public void verificar(Usuario aluno, int idPesquisa) throws SQLException {
         if (!respostaDAO.abertaParaCentro(idPesquisa, aluno.getSiglaCentro())) {
             throw new IllegalArgumentException("Esta pesquisa não está aberta para o seu centro.");
@@ -29,15 +29,11 @@ public class RespostaService {
         }
     }
 
-    /**
-     * Grava as respostas numa transação:
-     *  1. participacao: QUEM respondeu;
-     *  2. submissao: o questionário, SEM o aluno (só o centro);
-     *  3. resposta: cada resposta, ligada à submissão.
-     * Se qualquer passo falhar, nada fica gravado.
-     *
-     * @param valores o que veio do formulário: "q12" -> resposta da questão 12
-     */
+    // Grava as respostas do aluno numa transação, em três passos:
+    // primeiro a participacao (quem respondeu), depois a submissao (o questionário,
+    // sem o aluno, só com o centro) e por fim cada resposta, ligada à submissão.
+    // Se qualquer passo falhar, nada fica gravado.
+    // O mapa valores tem o que veio do formulário, por exemplo "q12" com a resposta da questão 12.
     public void responder(Usuario aluno, int idPesquisa, Map<String, String> valores) throws SQLException {
         verificar(aluno, idPesquisa);
 

@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Acesso à tabela tema. */
+// Acesso à tabela tema.
 public class TemaDAO {
 
     public List<Tema> listar() throws SQLException {

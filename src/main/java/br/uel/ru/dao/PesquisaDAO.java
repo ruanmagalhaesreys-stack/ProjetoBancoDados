@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Acesso às tabelas pesquisa, pesquisa_questao e pesquisa_centro. */
+// Acesso às tabelas pesquisa, pesquisa_questao e pesquisa_centro.
 public class PesquisaDAO {
 
     // Colunas usadas nas listagens. As duas subconsultas trazem os centros
@@ -23,7 +23,7 @@ public class PesquisaDAO {
           + "  (SELECT COUNT(*) FROM participacao pa WHERE pa.id_pesquisa = p.id) AS qtd_respostas "
           + "FROM pesquisa p ";
 
-    /** Todas as pesquisas, das mais recentes para as mais antigas. */
+    // Todas as pesquisas, das mais recentes para as mais antigas.
     public List<Pesquisa> listar() throws SQLException {
         List<Pesquisa> lista = new ArrayList<>();
         try (Connection con = Conexao.abrir();
@@ -49,10 +49,8 @@ public class PesquisaDAO {
         return null;
     }
 
-    /**
-     * Pesquisas que o aluno pode responder agora: abertas hoje, destinadas
-     * ao centro dele e que ele ainda não respondeu.
-     */
+    // Pesquisas que o aluno pode responder agora: abertas hoje, destinadas
+    // ao centro dele e que ele ainda não respondeu.
     public List<Pesquisa> listarAbertasParaAluno(int idAluno, String siglaCentro) throws SQLException {
         String sql = SELECT_PESQUISA
                 + "WHERE CURRENT_DATE BETWEEN p.data_inicio AND p.data_fim "
@@ -85,7 +83,7 @@ public class PesquisaDAO {
         }
     }
 
-    /** Insere a pesquisa e devolve o id gerado. Faz parte de uma transação. */
+    // Insere a pesquisa e devolve o id gerado. Faz parte de uma transação.
     public int inserir(Connection con, String titulo, String descricao,
                        LocalDate inicio, LocalDate fim, int idAdmin) throws SQLException {
         String sql = "INSERT INTO pesquisa (titulo, descricao, data_inicio, data_fim, id_admin) "

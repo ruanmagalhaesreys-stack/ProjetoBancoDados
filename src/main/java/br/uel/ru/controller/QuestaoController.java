@@ -13,7 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.sql.SQLException;
 import java.util.List;
 
-/** Telas do administrador para cadastrar questões (RF1). */
+// Telas do administrador para cadastrar questões (RF1).
 @Controller
 public class QuestaoController {
 

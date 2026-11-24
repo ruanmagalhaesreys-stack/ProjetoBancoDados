@@ -1,9 +1,7 @@
 package br.uel.ru.model;
 
-/**
- * Resposta de uma questão. Não tem o aluno: fica ligada só a uma
- * submissão anônima. Só um dos três valores é preenchido.
- */
+// Resposta de uma questão. Não tem o aluno: fica ligada só a uma
+// submissão anônima. Só um dos três valores é preenchido.
 public class Resposta {
 
     private int idQuestao;

@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Pesquisa de satisfação: um conjunto de questões, aberto num período. */
+// Pesquisa de satisfação: um conjunto de questões, aberto num período.
 public class Pesquisa {
 
     private int id;
@@ -17,13 +17,13 @@ public class Pesquisa {
     private int qtdRespostas;  // quantas pessoas já responderam
     private List<Questao> questoes = new ArrayList<>();
 
-    /** A pesquisa está aberta hoje? */
+    // A pesquisa está aberta hoje?
     public boolean isAberta() {
         LocalDate hoje = LocalDate.now();
         return !hoje.isBefore(dataInicio) && !hoje.isAfter(dataFim);
     }
 
-    /** Período para mostrar na tela, ex.: "09/11/2026 a 30/11/2026". */
+    // Período para mostrar na tela, ex.: "09/11/2026 a 30/11/2026".
     public String getPeriodo() {
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         return dataInicio.format(formato) + " a " + dataFim.format(formato);

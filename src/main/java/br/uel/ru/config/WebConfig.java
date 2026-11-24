@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-/** Liga o LoginInterceptor às páginas de administrador e de aluno. */
+// Liga o LoginInterceptor às páginas de administrador e de aluno.
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 

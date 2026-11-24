@@ -13,14 +13,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.sql.SQLException;
 
-/** Login, logout e cadastro de aluno. */
+// Login, logout e cadastro de aluno.
 @Controller
 public class LoginController {
 
     private UsuarioDAO usuarioDAO = new UsuarioDAO();
     private CentroDAO centroDAO = new CentroDAO();
 
-    /** Página inicial: manda cada usuário para a sua área. */
+    // Página inicial: manda cada usuário para a sua área.
     @GetMapping("/")
     public String inicio(HttpSession session) {
         Usuario usuario = (Usuario) session.getAttribute("usuario");

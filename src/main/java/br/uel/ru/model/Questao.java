@@ -3,7 +3,7 @@ package br.uel.ru.model;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Questão: de escala (1 a 5), de múltipla escolha ou de texto livre. */
+// Questão: de escala (1 a 5), de múltipla escolha ou de texto livre.
 public class Questao {
 
     private int id;
@@ -13,7 +13,7 @@ public class Questao {
     private String nomeTema;
     private List<Alternativa> alternativas = new ArrayList<>();
 
-    /** Nome do tipo para mostrar na tela. */
+    // Nome do tipo para mostrar na tela.
     public String getTipoDescricao() {
         if (tipo.equals("ESCALA")) return "Escala de 1 a 5";
         if (tipo.equals("MULTIPLA")) return "Múltipla escolha";
