@@ -13,6 +13,7 @@ SET client_encoding = 'UTF8';
 -- Mostra a média das notas de cada tema, nas pesquisas de um período e nos centros escolhidos.
 -- Os JOIN juntam a resposta com a submissão, a pesquisa, a questão e o tema.
 -- AVG calcula a média, COUNT conta as respostas e GROUP BY faz uma linha por tema.
+-- ROUND(valor, 2) arredonda a média para duas casas depois da vírgula.
 -- BETWEEN filtra o período e IN filtra os centros escolhidos.
 -- HAVING mostra só os temas com pelo menos 3 respostas.
 SELECT t.nome                AS tema,
