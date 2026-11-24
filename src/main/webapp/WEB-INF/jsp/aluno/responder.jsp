@@ -7,25 +7,27 @@
 <p>${pesquisa.descricao}</p>
 <p><i>Suas respostas são anônimas. Nas questões de escala, 1 = muito ruim e 5 = muito bom.</i></p>
 
-<form method="post" action="/aluno/pesquisas/${pesquisa.id}">
+<%-- Se faltar alguma resposta, a página volta com o aviso e com o que já foi marcado (${param[campo]}) --%>
+<form method="post" action="/aluno/pesquisas/${pesquisa.id}" novalidate>
     <c:forEach var="q" items="${pesquisa.questoes}" varStatus="s">
+        <%-- o nome do campo é "q" + id da questão, ex.: q12 --%>
+        <c:set var="campo" value="q${q.id}" />
         <p><b>${s.count}. ${q.enunciado}</b></p>
 
-        <%-- o nome do campo é "q" + id da questão, ex.: q12 --%>
         <c:if test="${q.tipo == 'ESCALA'}">
             <c:forEach begin="1" end="5" var="n">
-                <input type="radio" name="q${q.id}" value="${n}" required> ${n} &nbsp;
+                <input type="radio" name="${campo}" value="${n}" ${param[campo] == n ? 'checked' : ''}> ${n} &nbsp;
             </c:forEach>
         </c:if>
 
         <c:if test="${q.tipo == 'MULTIPLA'}">
             <c:forEach var="a" items="${q.alternativas}">
-                <input type="radio" name="q${q.id}" value="${a.ordem}" required> ${a.texto} &nbsp;
+                <input type="radio" name="${campo}" value="${a.ordem}" ${param[campo] == a.ordem ? 'checked' : ''}> ${a.texto} &nbsp;
             </c:forEach>
         </c:if>
 
         <c:if test="${q.tipo == 'TEXTO'}">
-            <textarea name="q${q.id}" maxlength="1000" placeholder="Opcional"></textarea>
+            <textarea name="${campo}" placeholder="Opcional">${param[campo]}</textarea>
         </c:if>
     </c:forEach>
 

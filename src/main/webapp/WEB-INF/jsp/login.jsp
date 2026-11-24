@@ -6,9 +6,10 @@
 <h1>Pesquisa de Satisfação do RU</h1>
 <h2>Entrar</h2>
 
-<form method="post" action="/login">
-    <label>Email <input type="email" name="email" value="${email}" required></label>
-    <label>Senha <input type="password" name="senha" required></label>
+<%-- novalidate: quem confere os campos é o servidor, e o erro aparece na caixa vermelha --%>
+<form method="post" action="/login" novalidate>
+    <label>Email <input type="email" name="email" value="${param.email}"></label>
+    <label>Senha <input type="password" name="senha"></label>
     <button type="submit">Entrar</button>
 </form>
 

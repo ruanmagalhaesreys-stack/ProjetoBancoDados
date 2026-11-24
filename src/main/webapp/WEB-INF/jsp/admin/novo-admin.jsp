@@ -6,10 +6,10 @@
 <h1>Novo administrador</h1>
 <p>Só quem já é administrador consegue abrir esta tela.</p>
 
-<form method="post" action="/admin/administradores">
-    <label>Nome <input type="text" name="nome" value="${nome}" required></label>
-    <label>Email <input type="email" name="email" value="${email}" required></label>
-    <label>Senha <input type="password" name="senha" minlength="6" required></label>
+<form method="post" action="/admin/administradores" novalidate>
+    <label>Nome <input type="text" name="nome" value="${param.nome}"></label>
+    <label>Email <input type="email" name="email" value="${param.email}"></label>
+    <label>Senha (mínimo 6 caracteres) <input type="password" name="senha"></label>
     <button type="submit">Cadastrar</button>
     <a href="/admin" class="botao">Cancelar</a>
 </form>

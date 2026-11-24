@@ -6,23 +6,23 @@
 <h1>Cadastro de aluno</h1>
 <p>Só alunos da UEL respondem as pesquisas. As respostas são sempre anônimas.</p>
 
-<form method="post" action="/cadastro">
-    <label>Nome <input type="text" name="nome" value="${nome}" required></label>
-    <label>Email <input type="email" name="email" value="${email}" required></label>
+<form method="post" action="/cadastro" novalidate>
+    <label>Nome <input type="text" name="nome" value="${param.nome}"></label>
+    <label>Email <input type="email" name="email" value="${param.email}"></label>
     <label>Matrícula (só números)
-        <input type="text" name="matricula" value="${matricula}" pattern="[0-9]{6,12}" required>
+        <input type="text" name="matricula" value="${param.matricula}">
     </label>
     <label>Centro
-        <select name="centro" required>
+        <select name="centro">
             <option value="">Escolha o seu centro</option>
             <c:forEach var="c" items="${centros}">
-                <option value="${c.sigla}" ${c.sigla == centroEscolhido ? 'selected' : ''}>
+                <option value="${c.sigla}" ${c.sigla == param.centro ? 'selected' : ''}>
                     ${c.sigla} - ${c.nome}
                 </option>
             </c:forEach>
         </select>
     </label>
-    <label>Senha <input type="password" name="senha" minlength="6" required></label>
+    <label>Senha (mínimo 6 caracteres) <input type="password" name="senha"></label>
     <button type="submit">Cadastrar</button>
     <a href="/login" class="botao">Voltar</a>
 </form>

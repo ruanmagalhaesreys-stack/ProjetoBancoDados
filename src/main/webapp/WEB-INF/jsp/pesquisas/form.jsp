@@ -5,21 +5,27 @@
 
 <h1>Nova pesquisa</h1>
 
-<form method="post" action="/admin/pesquisas">
-    <label>Título <input type="text" name="titulo" value="${titulo}" maxlength="120" required></label>
-    <label>Descrição <textarea name="descricao" maxlength="500">${descricao}</textarea></label>
-    <label>Abre em <input type="date" name="inicio" required></label>
-    <label>Fecha em <input type="date" name="fim" required></label>
+<%-- Se der erro, a página volta com o que foi digitado (${param...}) e marcado --%>
+<form method="post" action="/admin/pesquisas" novalidate>
+    <label>Título <input type="text" name="titulo" value="${param.titulo}"></label>
+    <label>Descrição <textarea name="descricao">${param.descricao}</textarea></label>
+    <label>Abre em <input type="date" name="inicio" value="${param.inicio}"></label>
+    <label>Fecha em <input type="date" name="fim" value="${param.fim}"></label>
 
     <h3>Quais centros devem responder?</h3>
     <c:forEach var="c" items="${centros}">
-        <label><input type="checkbox" name="centros" value="${c.sigla}"> ${c.sigla} - ${c.nome}</label>
+        <label>
+            <input type="checkbox" name="centros" value="${c.sigla}"
+                   ${not empty centrosEscolhidos and centrosEscolhidos.contains(c.sigla) ? 'checked' : ''}>
+            ${c.sigla} - ${c.nome}
+        </label>
     </c:forEach>
 
     <h3>Questões (aparecem para o aluno nesta ordem)</h3>
     <c:forEach var="q" items="${questoes}">
         <label>
-            <input type="checkbox" name="questoes" value="${q.id}">
+            <input type="checkbox" name="questoes" value="${q.id}"
+                   ${not empty questoesEscolhidas and questoesEscolhidas.contains(q.id) ? 'checked' : ''}>
             [${q.nomeTema}] ${q.enunciado} (${q.tipoDescricao})
         </label>
     </c:forEach>

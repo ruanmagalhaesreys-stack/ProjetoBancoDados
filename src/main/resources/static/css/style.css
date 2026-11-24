@@ -20,7 +20,7 @@ input[type=text], input[type=email], input[type=password], input[type=date], sel
 }
 button, .botao {
     margin-top: 12px; padding: 6px 14px; background: #fff; border: 1px solid #555;
-    color: #222; text-decoration: none; cursor: pointer; display: inline-block;
+    color: #222; text-decoration: none; cursor: pointer; display: inline-block; font: inherit;
 }
 
 /* tabelas */
