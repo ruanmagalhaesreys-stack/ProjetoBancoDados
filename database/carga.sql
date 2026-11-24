@@ -1,18 +1,16 @@
--- =====================================================================
 -- Pesquisa de Satisfação do RU da UEL
--- carga.sql: dados de teste. Rodar logo depois do schema.sql:
---   psql -U postgres -d ru_uel -f database/carga.sql
--- Senha de todos os usuários: ruuel2026
+-- Este arquivo coloca os dados de teste no banco. Rode logo depois do schema.sql.
+-- Para rodar: psql -U postgres -d ru_uel -f database/carga.sql
+-- A senha de todos os usuários é ruuel2026.
 --
--- O banco é criado do zero pelo schema.sql, então os ids gerados pelo
--- SERIAL começam em 1 e seguem a ordem dos INSERTs abaixo.
--- =====================================================================
+-- O schema.sql cria as tabelas vazias, então os ids gerados pelo SERIAL
+-- começam em 1 e seguem a ordem dos INSERT abaixo.
+-- INSERT INTO coloca linhas na tabela; cada parêntese depois de VALUES é uma linha.
 
-SET client_encoding = 'UTF8';  -- o arquivo está em UTF-8 (acentos)
+-- Avisa o banco que o arquivo está em UTF-8, para os acentos ficarem certos.
+SET client_encoding = 'UTF8';
 
--- ---------------------------------------------------------------------
--- 1. Centros da UEL
--- ---------------------------------------------------------------------
+-- Centros da UEL.
 INSERT INTO centro (sigla, nome) VALUES
     ('CCA',  'Centro de Ciências Agrárias'),
     ('CCB',  'Centro de Ciências Biológicas'),
@@ -24,9 +22,7 @@ INSERT INTO centro (sigla, nome) VALUES
     ('CESA', 'Centro de Estudos Sociais Aplicados'),
     ('CTU',  'Centro de Tecnologia e Urbanismo');
 
--- ---------------------------------------------------------------------
--- 2. Temas das questões (ids 1 a 5)
--- ---------------------------------------------------------------------
+-- Temas das questões (ids 1 a 5).
 INSERT INTO tema (nome) VALUES
     ('Comida'),                  -- 1
     ('Fila e Tempo de Espera'),  -- 2
@@ -34,11 +30,9 @@ INSERT INTO tema (nome) VALUES
     ('Atendimento'),             -- 4
     ('Cardápio e Preço');        -- 5
 
--- ---------------------------------------------------------------------
--- 3. Usuários: 2 administradores (ids 1 e 2) e 20 alunos (ids 3 a 22).
--- ana.demo e bruno.demo são contas para a demonstração: nunca
--- responderam nenhuma pesquisa.
--- ---------------------------------------------------------------------
+-- Usuários: 2 administradores (ids 1 e 2) e 20 alunos (ids 3 a 22).
+-- O administrador fica sem matrícula e sem centro (NULL quer dizer vazio).
+-- ana.demo e bruno.demo são contas para a demonstração e nunca responderam nada.
 INSERT INTO usuario (nome, email, senha, tipo, matricula, sigla_centro) VALUES
     ('Marta Oliveira',     'admin@uel.br',               'ruuel2026', 'ADMIN', NULL, NULL),         -- 1
     ('Carlos Pereira',     'carlos.ru@uel.br',           'ruuel2026', 'ADMIN', NULL, NULL),         -- 2
@@ -63,10 +57,8 @@ INSERT INTO usuario (nome, email, senha, tipo, matricula, sigla_centro) VALUES
     ('Livia Coelho',       'livia.coelho@uel.br',        'ruuel2026', 'ALUNO', '202500802', 'CECA'), -- 21
     ('Davi Medeiros',      'davi.medeiros@uel.br',       'ruuel2026', 'ALUNO', '202300902', 'CEFE'); -- 22
 
--- ---------------------------------------------------------------------
--- 4. Questões (ids 1 a 30): 25 de escala, 3 de múltipla escolha e 2 de
--- texto livre. O último número é o tema (1 = Comida ... 5 = Cardápio).
--- ---------------------------------------------------------------------
+-- Questões (ids 1 a 30): 25 de escala, 3 de múltipla escolha e 2 de texto livre.
+-- O último número de cada linha é o tema (1 = Comida até 5 = Cardápio e Preço).
 INSERT INTO questao (enunciado, tipo, id_tema) VALUES
     ('Como você avalia o sabor da comida servida no RU?',                'ESCALA',   1),  -- 1
     ('Como você avalia a temperatura em que a comida é servida?',        'ESCALA',   1),  -- 2
@@ -99,7 +91,7 @@ INSERT INTO questao (enunciado, tipo, id_tema) VALUES
     ('O que você mudaria na comida do RU?',                              'TEXTO',    1),  -- 29
     ('Deixe um elogio ou uma reclamação sobre o atendimento.',           'TEXTO',    4);  -- 30
 
--- Alternativas das questões de múltipla escolha (entidade fraca).
+-- Alternativas das questões de múltipla escolha: (questão, ordem, texto).
 INSERT INTO alternativa (id_questao, ordem, texto) VALUES
     (26, 1, 'Café da manhã'),
     (26, 2, 'Almoço'),
@@ -113,10 +105,9 @@ INSERT INTO alternativa (id_questao, ordem, texto) VALUES
     (28, 2, '3 ou 4 vezes'),
     (28, 3, '5 vezes ou mais');
 
--- ---------------------------------------------------------------------
--- 5. Pesquisas (ids 1 a 5): 4 encerradas e 1 aberta até 30/11/2026.
--- As de semestre repetem as mesmas questões, para comparar períodos.
--- ---------------------------------------------------------------------
+-- Pesquisas (ids 1 a 5): 4 já encerradas e 1 aberta até 30/11/2026.
+-- As pesquisas de semestre repetem as mesmas questões, para comparar os períodos.
+-- O último número de cada linha é o id do administrador que criou a pesquisa.
 INSERT INTO pesquisa (titulo, descricao, data_inicio, data_fim, id_admin) VALUES
     ('Satisfação com o RU - 2º semestre 2024',
      'Pesquisa semestral sobre comida, fila, limpeza, atendimento e preço.',
@@ -143,7 +134,7 @@ INSERT INTO pesquisa_questao (id_pesquisa, id_questao, ordem) VALUES
     (4, 1, 1), (4, 3, 2), (4, 7, 3), (4, 9, 4), (4, 12, 5), (4, 17, 6), (4, 22, 7), (4, 26, 8), (4, 29, 9),
     (5, 1, 1), (5, 2, 2), (5, 8, 3), (5, 10, 4), (5, 11, 5), (5, 18, 6), (5, 20, 7), (5, 24, 8), (5, 25, 9), (5, 28, 10);
 
--- Centros que devem responder cada pesquisa.
+-- Centros que devem responder cada pesquisa: (pesquisa, centro).
 INSERT INTO pesquisa_centro (id_pesquisa, sigla_centro) VALUES
     (1, 'CCA'), (1, 'CCB'), (1, 'CCE'), (1, 'CCH'), (1, 'CCS'), (1, 'CECA'), (1, 'CEFE'), (1, 'CESA'), (1, 'CTU'),
     (2, 'CCA'), (2, 'CCB'), (2, 'CCE'), (2, 'CCH'), (2, 'CCS'), (2, 'CECA'), (2, 'CEFE'), (2, 'CESA'), (2, 'CTU'),
@@ -151,16 +142,13 @@ INSERT INTO pesquisa_centro (id_pesquisa, sigla_centro) VALUES
     (4, 'CCA'), (4, 'CCB'), (4, 'CCE'), (4, 'CCH'), (4, 'CCS'), (4, 'CECA'), (4, 'CEFE'), (4, 'CESA'), (4, 'CTU'),
     (5, 'CCE'), (5, 'CTU'), (5, 'CESA'), (5, 'CCB'), (5, 'CCA');
 
--- ---------------------------------------------------------------------
--- 6. Respostas de teste
--- Para cada pesquisa:
---   participacao = QUEM respondeu (aluno e pesquisa);
---   submissao    = um questionário preenchido, SEM o aluno (só o centro);
---   resposta     = as respostas de cada submissão.
--- As submissões estão em outra ordem que as participações, como
--- aconteceria no sistema: não dá para saber de quem é cada uma.
--- Notas de 1 (muito ruim) a 5 (muito bom).
--- ---------------------------------------------------------------------
+-- Respostas de teste. Cada pesquisa tem três partes:
+-- participacao guarda quem respondeu (aluno e pesquisa);
+-- submissao guarda cada questionário respondido, sem o aluno (só o centro);
+-- resposta guarda, para cada questionário, a nota, a alternativa ou o texto de cada questão.
+-- As submissões estão numa ordem diferente das participações, como aconteceria
+-- no sistema, então não dá para saber de quem é cada uma.
+-- As notas vão de 1 (muito ruim) a 5 (muito bom).
 
 -- Pesquisa 1: Satisfação com o RU - 2º semestre 2024 (10 respostas)
 INSERT INTO participacao (id_aluno, id_pesquisa, data) VALUES
@@ -175,7 +163,7 @@ INSERT INTO participacao (id_aluno, id_pesquisa, data) VALUES
     (20, 1, '2024-11-18'),
     (22, 1, '2024-11-19');
 
--- submissões 1 a 10
+-- Questionários desta pesquisa (submissões 1 a 10).
 INSERT INTO submissao (id_pesquisa, sigla_centro, data) VALUES
     (1, 'CCA', '2024-11-14'),
     (1, 'CESA', '2024-11-10'),
@@ -232,7 +220,7 @@ INSERT INTO participacao (id_aluno, id_pesquisa, data) VALUES
     (21, 2, '2025-05-13'),
     (22, 2, '2025-05-12');
 
--- submissões 11 a 22
+-- Questionários desta pesquisa (submissões 11 a 22).
 INSERT INTO submissao (id_pesquisa, sigla_centro, data) VALUES
     (2, 'CTU', '2025-05-21'),
     (2, 'CECA', '2025-05-13'),
@@ -296,7 +284,7 @@ INSERT INTO participacao (id_aluno, id_pesquisa, data) VALUES
     (21, 3, '2025-11-06'),
     (22, 3, '2025-11-10');
 
--- submissões 23 a 35
+-- Questionários desta pesquisa (submissões 23 a 35).
 INSERT INTO submissao (id_pesquisa, sigla_centro, data) VALUES
     (3, 'CCA', '2025-11-03'),
     (3, 'CCE', '2025-10-28'),
@@ -363,7 +351,7 @@ INSERT INTO participacao (id_aluno, id_pesquisa, data) VALUES
     (20, 4, '2026-05-20'),
     (21, 4, '2026-05-11');
 
--- submissões 36 a 49
+-- Questionários desta pesquisa (submissões 36 a 49).
 INSERT INTO submissao (id_pesquisa, sigla_centro, data) VALUES
     (4, 'CTU', '2026-05-20'),
     (4, 'CCS', '2026-05-12'),
@@ -427,7 +415,7 @@ INSERT INTO participacao (id_aluno, id_pesquisa, data) VALUES
     (17, 5, '2026-11-21'),
     (20, 5, '2026-11-11');
 
--- submissões 50 a 55
+-- Questionários desta pesquisa (submissões 50 a 55).
 INSERT INTO submissao (id_pesquisa, sigla_centro, data) VALUES
     (5, 'CCE', '2026-11-22'),
     (5, 'CCA', '2026-11-11'),
