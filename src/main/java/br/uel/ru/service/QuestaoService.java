@@ -56,4 +56,20 @@ public class QuestaoService {
             con.close();
         }
     }
+
+    // Confere se a questão pode ser excluída: ela não pode estar em nenhuma pesquisa.
+    // Se estivesse, as respostas dessas pesquisas ficariam sem a questão.
+    // O banco também protege isso: a chave estrangeira recusaria o DELETE.
+    public void verificarExclusao(int id) throws SQLException {
+        List<String> pesquisas = questaoDAO.listarPesquisasQueUsam(id);
+        if (!pesquisas.isEmpty()) {
+            throw new IllegalArgumentException("A questão nº " + id + " está nas pesquisas: "
+                    + String.join(", ", pesquisas) + ". Por isso ela não pode ser excluída.");
+        }
+    }
+
+    public void excluir(int id) throws SQLException {
+        verificarExclusao(id);
+        questaoDAO.excluir(id);
+    }
 }

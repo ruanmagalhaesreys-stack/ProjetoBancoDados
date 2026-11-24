@@ -56,8 +56,11 @@ public class RelatorioController {
     @GetMapping("/admin/relatorios/participacao")
     public String participacao(@RequestParam(required = false) Integer pesquisa, Model model) throws SQLException {
         List<Pesquisa> pesquisas = pesquisaDAO.listar();
-        if (pesquisa == null) {
+        if (pesquisa == null && !pesquisas.isEmpty()) {
             pesquisa = pesquisas.get(0).getId(); // a mais recente
+        }
+        if (pesquisa == null) {
+            pesquisa = 0; // não há nenhuma pesquisa: o relatório fica vazio
         }
         model.addAttribute("pesquisas", pesquisas);
         model.addAttribute("pesquisaEscolhida", pesquisa);

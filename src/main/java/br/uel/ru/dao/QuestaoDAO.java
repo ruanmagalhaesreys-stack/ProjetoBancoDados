@@ -56,6 +56,54 @@ public class QuestaoDAO {
         return lista;
     }
 
+    // Uma questão pelo id. Devolve null se ela não existir.
+    public Questao buscar(int id) throws SQLException {
+        String sql = "SELECT q.id, q.enunciado, q.tipo, q.id_tema, t.nome AS nome_tema "
+                   + "FROM questao q JOIN tema t ON t.id = q.id_tema "
+                   + "WHERE q.id = ?";
+        try (Connection con = Conexao.abrir();
+             PreparedStatement st = con.prepareStatement(sql)) {
+            st.setInt(1, id);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    return montar(rs);
+                }
+            }
+        }
+        return null;
+    }
+
+    // Títulos das pesquisas que usam a questão. Se a lista vier vazia, a questão pode ser excluída.
+    public List<String> listarPesquisasQueUsam(int idQuestao) throws SQLException {
+        String sql = "SELECT p.titulo FROM pesquisa_questao pq "
+                   + "JOIN pesquisa p ON p.id = pq.id_pesquisa "
+                   + "WHERE pq.id_questao = ? "
+                   + "ORDER BY p.titulo";
+        List<String> titulos = new ArrayList<>();
+        try (Connection con = Conexao.abrir();
+             PreparedStatement st = con.prepareStatement(sql)) {
+            st.setInt(1, idQuestao);
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    titulos.add(rs.getString("titulo"));
+                }
+            }
+        }
+        return titulos;
+    }
+
+    // Apaga a questão. As alternativas dela são apagadas junto, por causa do
+    // ON DELETE CASCADE da tabela alternativa (veja o schema.sql).
+    // Se a questão estiver em alguma pesquisa, o banco recusa o DELETE,
+    // porque a chave estrangeira de pesquisa_questao não tem CASCADE.
+    public void excluir(int id) throws SQLException {
+        try (Connection con = Conexao.abrir();
+             PreparedStatement st = con.prepareStatement("DELETE FROM questao WHERE id = ?")) {
+            st.setInt(1, id);
+            st.executeUpdate();
+        }
+    }
+
     public List<Alternativa> listarAlternativas(int idQuestao) throws SQLException {
         String sql = "SELECT id_questao, ordem, texto FROM alternativa WHERE id_questao = ? ORDER BY ordem";
         List<Alternativa> lista = new ArrayList<>();

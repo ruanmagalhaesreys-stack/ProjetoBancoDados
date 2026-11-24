@@ -96,6 +96,17 @@ Alunos novos se cadastram pelo link *Cadastre-se* da tela de login.
 só abre para quem já é administrador; a tela de cadastro pública cria apenas alunos. O primeiro
 administrador (`admin@uel.br`) vem pronto no `carga.sql`.
 
+## Editar e excluir
+
+Nas listas de *Questões* e de *Pesquisas* há os links **Editar** e **Excluir**. Antes de excluir, o
+sistema abre uma tela pedindo confirmação.
+
+| Ação | Regra | Como o banco ajuda |
+|---|---|---|
+| Excluir questão | Só se ela não estiver em nenhuma pesquisa. Se estiver, o sistema avisa em quais pesquisas ela está. | As alternativas são apagadas junto (`ON DELETE CASCADE`). A chave estrangeira de `pesquisa_questao` não tem CASCADE, então o banco também recusaria apagar uma questão usada. |
+| Editar pesquisa | Título, descrição e datas podem mudar sempre (por exemplo, para prorrogar o prazo). Questões e centros só mudam enquanto ninguém respondeu. | `UPDATE` na pesquisa; as questões e os centros são trocados com `DELETE` + `INSERT`, numa transação. |
+| Excluir pesquisa | Pode sempre, mas se ela já tiver respostas a tela avisa que todas serão apagadas e saem dos relatórios. | Numa transação: apaga `participacao`, depois `submissao` (as respostas vão junto pelo CASCADE) e por fim a pesquisa (as questões escolhidas e os centros vão junto pelo CASCADE). |
+
 ## Dados de teste (`carga.sql`)
 
 Escritos à mão, com INSERTs normais:

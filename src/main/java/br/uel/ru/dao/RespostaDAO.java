@@ -73,6 +73,24 @@ public class RespostaDAO {
         }
     }
 
+    // Apaga o registro de quem respondeu a pesquisa (usado ao excluir a pesquisa).
+    public void excluirParticipacoes(Connection con, int idPesquisa) throws SQLException {
+        try (PreparedStatement st = con.prepareStatement("DELETE FROM participacao WHERE id_pesquisa = ?")) {
+            st.setInt(1, idPesquisa);
+            st.executeUpdate();
+        }
+    }
+
+    // Apaga os questionários respondidos da pesquisa (usado ao excluir a pesquisa).
+    // As respostas de cada questionário vão junto, por causa do ON DELETE CASCADE
+    // da tabela resposta.
+    public void excluirSubmissoes(Connection con, int idPesquisa) throws SQLException {
+        try (PreparedStatement st = con.prepareStatement("DELETE FROM submissao WHERE id_pesquisa = ?")) {
+            st.setInt(1, idPesquisa);
+            st.executeUpdate();
+        }
+    }
+
     // Grava a resposta de uma questão dentro da submissão.
     public void inserirResposta(Connection con, int idSubmissao, Resposta r) throws SQLException {
         String sql = "INSERT INTO resposta (id_submissao, id_questao, nota, alternativa, texto) "

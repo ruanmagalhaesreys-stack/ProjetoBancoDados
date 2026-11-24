@@ -7,7 +7,7 @@
 <a href="/admin/questoes/nova" class="botao">+ Nova questão</a>
 
 <table>
-    <tr><th>#</th><th>Enunciado</th><th>Tipo</th><th>Tema</th></tr>
+    <tr><th>#</th><th>Enunciado</th><th>Tipo</th><th>Tema</th><th>Ações</th></tr>
     <c:forEach var="q" items="${questoes}">
         <tr>
             <td>${q.id}</td>
@@ -19,6 +19,7 @@
             </td>
             <td>${q.tipoDescricao}</td>
             <td>${q.nomeTema}</td>
+            <td><a href="/admin/questoes/${q.id}/excluir">Excluir</a></td>
         </tr>
     </c:forEach>
 </table>

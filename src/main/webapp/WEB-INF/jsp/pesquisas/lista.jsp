@@ -7,7 +7,7 @@
 <a href="/admin/pesquisas/nova" class="botao">+ Nova pesquisa</a>
 
 <table>
-    <tr><th>Título</th><th>Período</th><th>Centros</th><th>Respostas</th><th>Situação</th></tr>
+    <tr><th>Título</th><th>Período</th><th>Centros</th><th>Respostas</th><th>Situação</th><th>Ações</th></tr>
     <c:forEach var="p" items="${pesquisas}">
         <tr>
             <td>${p.titulo}</td>
@@ -15,6 +15,10 @@
             <td>${p.centros}</td>
             <td>${p.qtdRespostas}</td>
             <td>${p.aberta ? 'aberta' : 'fechada'}</td>
+            <td>
+                <a href="/admin/pesquisas/${p.id}/editar">Editar</a>
+                <a href="/admin/pesquisas/${p.id}/excluir">Excluir</a>
+            </td>
         </tr>
     </c:forEach>
 </table>
