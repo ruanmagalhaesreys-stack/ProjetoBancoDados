@@ -137,7 +137,7 @@ CREATE TABLE submissao (
 -- A resposta de cada questão dentro de um questionário.
 -- Só uma das três colunas é preenchida, conforme o tipo da questão:
 -- nota (escala), alternativa (múltipla escolha) ou texto (texto livre).
--- num_nonnulls conta quantas colunas estão preenchidas; o CHECK exige exatamente uma.
+-- O último CHECK aceita só três casos: só a nota, só a alternativa ou só o texto.
 -- A chave estrangeira dupla garante que a alternativa escolhida existe naquela questão.
 CREATE TABLE resposta (
     id_submissao INT           NOT NULL,
@@ -150,5 +150,9 @@ CREATE TABLE resposta (
     FOREIGN KEY (id_questao)   REFERENCES questao (id),
     FOREIGN KEY (id_questao, alternativa) REFERENCES alternativa (id_questao, ordem),
     CONSTRAINT ck_resposta_nota CHECK (nota BETWEEN 1 AND 5),
-    CONSTRAINT ck_resposta_um_valor CHECK (num_nonnulls(nota, alternativa, texto) = 1)
+    CONSTRAINT ck_resposta_um_valor CHECK (
+        (nota IS NOT NULL AND alternativa IS NULL     AND texto IS NULL)
+     OR (nota IS NULL     AND alternativa IS NOT NULL AND texto IS NULL)
+     OR (nota IS NULL     AND alternativa IS NULL     AND texto IS NOT NULL)
+    )
 );
