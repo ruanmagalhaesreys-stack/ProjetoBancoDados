@@ -49,14 +49,23 @@ public class AlunoController {
 
     @PostMapping("/aluno/pesquisas/{id}")
     public String responder(@PathVariable int id, @RequestParam Map<String, String> valores,
-                            HttpSession session, RedirectAttributes redirect) {
+                            HttpSession session, Model model, RedirectAttributes redirect) throws SQLException {
         Usuario aluno = (Usuario) session.getAttribute("usuario");
         try {
-            respostaService.responder(aluno, id, valores);
-            redirect.addFlashAttribute("msg", "Obrigado! Suas respostas foram registradas de forma anônima.");
-        } catch (IllegalArgumentException | SQLException e) {
-            redirect.addFlashAttribute("erro", "Não foi possível registrar: " + e.getMessage());
+            respostaService.verificar(aluno, id);
+        } catch (IllegalArgumentException e) {
+            // já respondeu ou a pesquisa não é para o centro dele: volta para a lista
+            redirect.addFlashAttribute("erro", e.getMessage());
+            return "redirect:/aluno/pesquisas";
         }
+        try {
+            respostaService.responder(aluno, id, valores);
+        } catch (IllegalArgumentException | SQLException e) {
+            // faltou alguma resposta: volta para o formulário, com o que já foi marcado
+            model.addAttribute("erro", "Não foi possível registrar: " + e.getMessage());
+            return formulario(id, session, model);
+        }
+        redirect.addFlashAttribute("msg", "Obrigado! Suas respostas foram registradas de forma anônima.");
         return "redirect:/aluno/pesquisas";
     }
 }

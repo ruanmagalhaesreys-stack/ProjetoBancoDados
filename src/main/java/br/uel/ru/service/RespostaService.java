@@ -52,6 +52,9 @@ public class RespostaService {
                 if (valor == null || valor.isBlank()) {
                     continue; // texto livre é opcional
                 }
+                if (valor.trim().length() > 1000) {
+                    throw new IllegalArgumentException("O comentário pode ter até 1000 letras.");
+                }
                 r.setTexto(valor.trim());
             } else {
                 if (valor == null || valor.isBlank()) {
